@@ -1,6 +1,8 @@
 $gold: #f1b900;
 $black: #000000;
 $white: #ffffff;
+$red: #e74c3c; // Light red color for negative values
+$green: #2ecc71; // Light green color for positive values
 
 .game-container {
     display: flex;
@@ -9,6 +11,7 @@ $white: #ffffff;
     padding: 20px;
     background-color: $white;
     color: $black;
+    margin-top: 130px;
 
     .game-header {
         text-align: center;
@@ -21,91 +24,157 @@ $white: #ffffff;
         }
     }
 
-    .game-layout {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 30px; // Spacing between the players card and control panel
-        width: 100%;
-        max-width: 1200px;
-    }
-
-    .players-card {
-        flex: 1; // Takes equal space as the control panel
-        background-color: $black;
-        color: $white;
-        border-radius: 8px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-
-        h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: $gold;
-        }
-
-        .players-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            list-style: none;
-            padding: 0;
-
-            .player-item {
-                flex: 1 0 calc(50% - 10px); // 2 items per row
-                text-align: center;
-                padding: 10px;
-                border: 2px solid $gold;
-                border-radius: 5px;
-                background-color: $white;
-                color: $black;
-                cursor: pointer;
-                transition: all 0.3s;
-
-                &:hover {
-                    background-color: $gold;
-                    color: $white;
-                }
-
-                &.active {
-                    background-color: $gold;
-                    color: $black;
-                    border: 2px solid $black;
-                    transform: scale(1.05); // Slight expansion for active state
-                }
-            }
-        }
-    }
-
     .control-panel {
-        flex: 1; // Takes equal space as the players card
+        position: absolute;
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 600px;
+        height: auto;
         background-color: $white;
         border: 2px solid $gold;
         border-radius: 8px;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         padding: 20px;
+        opacity: 0;
+        transition: all 0.4s ease-in-out;
+
+        &.visible {
+            top: 20px;
+            opacity: 1;
+        }
+
+        .control-panel-group {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+
+            .team-group {
+                grid-column: span 3;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                align-items: center;
+                padding: 15px 5px 5px 5px;
+                border-radius: 7px;
+                border: 1px solid black;
+                position: relative;
+
+                .control-btn {
+                    padding: 10px 20px;
+                    background-color: $gold;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    font-size: 1.2em;
+
+                    &:hover {
+                        background-color: darken($gold, 10%);
+                    }
+                }
+
+                .group-title {
+                    position: absolute;
+                    top: -10px;
+                    left: 10px;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    color: $black;
+                    background-color: $white;
+                    padding: 0px 5px;
+                }
+            }
+        }
+    }
+
+    .game-layout {
         display: flex;
         justify-content: center;
-        align-items: center;
-        text-align: center;
+        gap: 20px;
+        width: 100%;
+        max-width: 1200px;
 
-        .proceed-btn {
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            background-color: $gold;
-            color: $black;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .players-card {
+            flex: 1;
+            background-color: $black;
+            color: $white;
+            padding: 20px;
+            border-radius: 8px;
 
-            &:hover {
-                background-color: darken($gold, 10%);
+            .players-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                list-style: none;
+
+                .player-item {
+                    flex: 1 0 calc(50% - 10px);
+                    text-align: center;
+                    padding: 10px;
+                    border: 2px solid $gold;
+                    background-color: $gold;
+                    color: $black;
+                    font-weight: bold;
+                    cursor: pointer;
+
+                    &.active {
+                        background-color: $black;
+                        color: $white;
+                    }
+                }
             }
         }
 
-        .selection-info {
-            font-size: 1rem;
+        .lineup-stats {
+            flex: 1;
+            background-color: $white;
             color: $black;
+            padding: 20px;
+            border: 2px solid $gold;
+            border-radius: 8px;
+
+            .lineup {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 15px;
+                padding: 15px;
+                background-color: $white;
+                border-radius: 8px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+                .players {
+                    flex: 1;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    color: $black;
+                    text-align: left;
+                }
+
+                .plus-minus {
+                    font-size: 1rem;
+                    font-weight: bold;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+
+                    &.negative {
+                        background-color: $red;
+                        color: $white;
+                    }
+
+                    &.positive {
+                        background-color: $green;
+                        color: $white;
+                    }
+                }
+            }
         }
     }
 }
