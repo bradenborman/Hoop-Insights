@@ -1,0 +1,13 @@
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@import "../components/ContentArea/ContentArea.scss";
+@import "../components/Layout/Layout.scss";
+@import "../components/Sidebar/Sidebar.scss";
+@import "../components/Game/InititateGame/InitiateGame.scss"

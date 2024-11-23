@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GroupTrivia from './components/app/groupTrivia';
+import HoopInsights from './app/hoopinsights';
 
 ReactDOM.render(
-  <GroupTrivia />,
+  <HoopInsights />,
   document.getElementById('root')
 );
