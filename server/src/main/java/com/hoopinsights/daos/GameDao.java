@@ -41,4 +41,14 @@ public class GameDao {
         return jdbcTemplate.queryForObject(sql, params, Integer.class);
     }
 
+    public String getAwayTeam(String gameId) {
+        String sql = "SELECT away_team " +
+                "FROM game " +
+                "WHERE id = :gameId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("gameId", gameId);
+
+        return jdbcTemplate.queryForObject(sql, params, String.class);
+    }
 }

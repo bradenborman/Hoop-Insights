@@ -4,6 +4,7 @@ import com.hoopinsights.daos.GameDao;
 import com.hoopinsights.daos.PointsScoredDao;
 import com.hoopinsights.models.Game;
 import com.hoopinsights.models.Lineup;
+import com.hoopinsights.models.Player;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -42,4 +43,7 @@ public class GameService {
     }
 
 
+    public String getAwayTeam(String gameId) {
+        return gameDao.getAwayTeam(gameId);
+    }
 }

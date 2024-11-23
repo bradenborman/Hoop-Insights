@@ -44,6 +44,11 @@ public class GameController {
     }
 
 
+    @GetMapping("/away-team")
+    public String getAwayTeam(@RequestParam String gameId) {
+        return gameService.getAwayTeam(gameId);
+    }
+
     @GetMapping("/players")
     public List<Player> getAllPlayers() {
         return playerDao.getAllPlayers();

@@ -1,0 +1,111 @@
+$gold: #f1b900;
+$black: #000000;
+$white: #ffffff;
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: $white;
+    color: $black;
+
+    .game-header {
+        text-align: center;
+        margin-bottom: 20px;
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: $gold;
+        }
+    }
+
+    .game-layout {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 30px; // Spacing between the players card and control panel
+        width: 100%;
+        max-width: 1200px;
+    }
+
+    .players-card {
+        flex: 1; // Takes equal space as the control panel
+        background-color: $black;
+        color: $white;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: $gold;
+        }
+
+        .players-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+
+            .player-item {
+                flex: 1 0 calc(50% - 10px); // 2 items per row
+                text-align: center;
+                padding: 10px;
+                border: 2px solid $gold;
+                border-radius: 5px;
+                background-color: $white;
+                color: $black;
+                cursor: pointer;
+                transition: all 0.3s;
+
+                &:hover {
+                    background-color: $gold;
+                    color: $white;
+                }
+
+                &.active {
+                    background-color: $gold;
+                    color: $black;
+                    border: 2px solid $black;
+                    transform: scale(1.05); // Slight expansion for active state
+                }
+            }
+        }
+    }
+
+    .control-panel {
+        flex: 1; // Takes equal space as the players card
+        background-color: $white;
+        border: 2px solid $gold;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        .proceed-btn {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: $gold;
+            color: $black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: darken($gold, 10%);
+            }
+        }
+
+        .selection-info {
+            font-size: 1rem;
+            color: $black;
+        }
+    }
+}

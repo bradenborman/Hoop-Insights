@@ -7,7 +7,5 @@
     padding: 0;
 }
 
-@import "../components/ContentArea/ContentArea.scss";
-@import "../components/Layout/Layout.scss";
-@import "../components/Sidebar/Sidebar.scss";
-@import "../components/Game/InititateGame/InitiateGame.scss"
+@import "../components/Game/InititateGame/InitiateGame.scss";
+@import "../components/Game/View/Game.scss";

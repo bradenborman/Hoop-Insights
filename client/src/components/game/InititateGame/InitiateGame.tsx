@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const InitiateGame: React.FC = () => {
     const [awayTeamName, setAwayTeamName] = useState<string>('');
@@ -9,12 +10,21 @@ const InitiateGame: React.FC = () => {
         setAwayTeamName(e.target.value);
     };
 
-    const handleStartGame = () => {
+    const handleStartGame = async () => {
         if (awayTeamName.trim()) {
-            const gameId = 1;  // Example gameId; you can dynamically generate this as needed
-            navigate(`/game/${gameId}`, {
-                state: { phrase: 'lemon' }  // Passing the state with the "phrase" property
-            });
+            try {
+                const response = await axios.post('/api/game', null, {
+                    params: { awayTeam: awayTeamName }
+                });
+
+                const gameId = response.data.id;
+
+                navigate(`/game/${gameId}`, {
+                    state: { phrase: 'lemon' }
+                });
+            } catch (error) {
+                console.error('Error starting the game:', error);
+            }
         }
     };
 
@@ -28,7 +38,7 @@ const InitiateGame: React.FC = () => {
                     value={awayTeamName}
                     onChange={handleAwayTeamChange}
                     placeholder="Enter away team name"
-                    autoComplete='off'
+                    autoComplete="off"
                 />
             </div>
             <button onClick={handleStartGame} className="start-game-btn">
