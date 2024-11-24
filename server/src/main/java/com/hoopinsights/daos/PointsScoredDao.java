@@ -69,7 +69,7 @@ public class PointsScoredDao {
                             ),
                             Integer.parseInt(playerId)
                     ))
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
 
             int totalPlusMinus = rs.getInt("total_plus_minus");
             int totalTimesScored = rs.getInt("total_times_scored");

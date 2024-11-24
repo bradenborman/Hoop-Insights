@@ -1,8 +1,8 @@
 $gold: #f1b900;
 $black: #000000;
 $white: #ffffff;
-$red: #e74c3c; // Light red color for negative values
-$green: #2ecc71; // Light green color for positive values
+$red: #a11101;
+$green: #2ecc71;
 
 .game-container {
     display: flex;
@@ -151,7 +151,24 @@ $green: #2ecc71; // Light green color for positive values
                     font-weight: bold;
                     color: $black;
                     text-align: left;
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    .player-name {
+                        display: inline-block;
+                        padding: 5px 10px;
+                        margin: 3px 5px;
+                        background-color: $gold;
+                        color: $black;
+                        border-radius: 15px;
+                        font-size: 0.9rem;
+                        font-weight: 600;
+                        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+                        cursor: default;
+                        border: 1px solid darken($gold, 10%);
+                    }
                 }
+
 
                 .plus-minus {
                     font-size: 1rem;

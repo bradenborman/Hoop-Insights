@@ -8,15 +8,16 @@ interface Player {
 }
 
 interface Lineup {
-    id: number; // Unique identifier for the lineup
-    players: Player[]; // Array of players in the lineup
-    plusMinus: number; // Plus-minus score for the lineup
+    playersOnCourt: Player[]; // Array of players currently on the court
+    totalPlusMinus: number; // Plus-minus score for the lineup
+    totalTimesScored: number; // Total times this lineup has scored
 }
 
 const Game: React.FC = () => {
     const { gameId } = useParams<{ gameId: string }>();
     const [players, setPlayers] = useState<Player[]>([]);
     const [activePlayers, setActivePlayers] = useState<Player[]>([]);
+    const [lineups, setLineups] = useState<Lineup[]>([]); // Lineups returned from API
     const [awayTeamName, setAwayTeamName] = useState<string>();
 
     useEffect(() => {
@@ -30,6 +31,19 @@ const Game: React.FC = () => {
         };
 
         fetchPlayers();
+    }, []);
+
+    useEffect(() => {
+        const fetchExsitingLinups = async () => {
+            try {
+                const response = await axios.get(`/api/game/${gameId}/lineups`);
+                setLineups(response.data);
+            } catch (error) {
+                console.error('Error fetching players:', error);
+            }
+        };
+
+        fetchExsitingLinups();
     }, []);
 
     useEffect(() => {
@@ -55,6 +69,29 @@ const Game: React.FC = () => {
         }
     };
 
+    const handleScore = async (points: number, isOurTeam: boolean) => {
+        if (activePlayers.length !== 5) {
+            alert("Exactly 5 players must be active to score.");
+            return;
+        }
+
+        const playerIds = activePlayers.map((player) => player.id);
+        try {
+            const response = await axios.post('/api/game/score', null, {
+                params: {
+                    gameId: gameId,
+                    playerIds: playerIds.join(','), // Join IDs as a comma-separated string
+                    points: points,
+                    isOurTeam: isOurTeam
+                }
+            });
+
+            setLineups(response.data); // Overwrite the lineups state with fresh data
+        } catch (error) {
+            console.error('Error updating score:', error);
+        }
+    };
+
     return (
         <div className="game-container">
             <div
@@ -62,15 +99,15 @@ const Game: React.FC = () => {
             >
                 <div className="control-panel-group">
                     <div className="team-group">
-                        <button className="control-btn">1</button>
-                        <button className="control-btn">2</button>
-                        <button className="control-btn">3</button>
+                        <button className="control-btn" onClick={() => handleScore(1, true)}>1</button>
+                        <button className="control-btn" onClick={() => handleScore(2, true)}>2</button>
+                        <button className="control-btn" onClick={() => handleScore(3, true)}>3</button>
                         <span className="group-title">Mizzou</span>
                     </div>
                     <div className="team-group">
-                        <button className="control-btn">1</button>
-                        <button className="control-btn">2</button>
-                        <button className="control-btn">3</button>
+                        <button className="control-btn" onClick={() => handleScore(1, false)}>1</button>
+                        <button className="control-btn" onClick={() => handleScore(2, false)}>2</button>
+                        <button className="control-btn" onClick={() => handleScore(3, false)}>3</button>
                         <span className="group-title">{awayTeamName || 'Away Team'}</span>
                     </div>
                 </div>
@@ -101,17 +138,22 @@ const Game: React.FC = () => {
                 </div>
 
                 <div className="lineup-stats">
-                    {/* <div className="lineup">
-                        <div className="players">J Crews, T Burns, M Allen, M Mitchell, A Shaw</div>
-                        <div className="plus-minus positive">(12)</div>
-                    </div>
-                    <div className="lineup">
-                        <div className="players">A Smith, B Davis, C Hill, D Young, E Lee</div>
-                        <div className="plus-minus negative">(-5)</div>
-                    </div> */}
+                    {lineups.map((lineup, index) => (
+                        <div key={index} className="lineup">
+                            <div className="players">
+                                {lineup.playersOnCourt.map((player) => (
+                                    <span key={player.name} className="player-name">
+                                        {player.name}
+                                    </span>
+                                ))}
+                            </div>
+                            <div className={`plus-minus ${lineup.totalPlusMinus >= 0 ? 'positive' : 'negative'}`}>
+                                ({lineup.totalPlusMinus})
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
-
         </div>
     );
 };

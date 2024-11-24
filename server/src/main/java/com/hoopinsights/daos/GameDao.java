@@ -1,6 +1,7 @@
 package com.hoopinsights.daos;
 
 import com.hoopinsights.models.Game;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -49,6 +50,10 @@ public class GameDao {
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("gameId", gameId);
 
-        return jdbcTemplate.queryForObject(sql, params, String.class);
+        try {
+            return jdbcTemplate.queryForObject(sql, params, String.class);
+        } catch (EmptyResultDataAccessException e) {
+            return "Other Team";
+        }
     }
 }
